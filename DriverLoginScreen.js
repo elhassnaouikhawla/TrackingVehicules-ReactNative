@@ -9,6 +9,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     if (role === 'driver' && username === 'driver' && password === 'driver') {
+      console.log(role);
       navigation.navigate('DriverScreen');
     } else if (role === 'admin' && username === 'admin' && password === 'admin') {
       navigation.navigate('AdminScreen');
@@ -31,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.iconText}>Admin</Text>
           </TouchableOpacity>
         </View>
-        {role && (
+        {  (
           <>
             <TextInput
               style={styles.input}

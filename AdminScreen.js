@@ -1,31 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { createStackNavigator } from '@react-navigation/stack';
+import DriverAdmin from './DriverAdmin';
 
-const AdminScreen = () => {
+const Stack = createStackNavigator();
 
-  const trips = [
-    { id: '1', name: 'Trip 1', image: require('./images/gps.jpg') },
-    { id: '2', name: 'Trip 2', image: require('./images/gps.jpg') },
-    { id: '3', name: 'Trip 3', image: require('./images/gps.jpg') },
-    { id: '4', name: 'Trip 4', image: require('./images/gps.jpg') },
-    { id: '5', name: 'Trip 5', image: require('./images/gps.jpg') },
-  ];
+const AdminScreen = ({ navigation }) => {
+  const [trips, setTrips] = useState([
+    { id: '1', DriverName: 'khawla', startDate: '20/05/2023', endDate: '25/05/2023', destination: require('./images/cardAd.jpg'), destinationName: 'Agadir' },
+    { id: '2', DriverName: 'wafae', startDate: '15/06/2023', endDate: '22/06/2023', destination: require('./images/cardAd.jpg'), destinationName: 'Casablanca' },
+    { id: '3', DriverName: 'imrane', startDate: '10/07/2023', endDate: '20/07/2023', destination: require('./images/cardAd.jpg'), destinationName: 'Tanger' },
+    { id: '4', DriverName: 'ayoub', startDate: '01/08/2023', endDate: '10/08/2023', destination: require('./images/cardAd.jpg'), destinationName: 'Rabat' },
+    { id: '5', DriverName: 'ines', startDate: '05/09/2023', endDate: '15/09/2023', destination: require('./images/cardAd.jpg'), destinationName: 'Sale' },
+  ]);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card}>
-      <Image source={item.image} style={styles.cardImage} />
-      <Text style={styles.cardTitle}>{item.name}</Text>
-    </TouchableOpacity>
+    <View style={styles.tripCard}>
+      <Image source={item.destination} style={styles.cardBackground} />
+      <View style={styles.cardContent}>
+        <Text style={styles.destinationText}>{item.destinationName}</Text>
+        <Text style={styles.cardText}>{item.DriverName}</Text>
+        <Text style={styles.cardText}>{item.startDate} - {item.endDate}</Text>
+      </View>
+    </View>
   );
 
+  const handleDriverPress = () => {
+    navigation.navigate('DriverAdmin');
+  };
+  const handleTripsPress = () => {
+    navigation.navigate('TripsAdmin');
+  };
+  const handleCarsPress = () => {
+    navigation.navigate('CarsAdmin');
+  }; 
   return (
     <View style={styles.container}>
       <View style={styles.coverPhotoContainer}>
-        <Image
-          style={styles.coverPhoto}
-          source={require('./images/trackin-car.jpg')}
-        />
+        <Image style={styles.coverPhoto} source={require('./images/trackin-car.jpg')} />
       </View>
       <View style={styles.searchBarContainer}>
         <TextInput style={styles.searchBar} placeholder="Search" />
@@ -34,35 +47,57 @@ const AdminScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity style={styles.icon}>
-          <Icon name="person" size={32} color="#000" />
-          <Text style={styles.iconText}>Driver</Text>
+        <TouchableOpacity style={styles.icon} onPress={handleDriverPress}>
+          <Icon name="person" size={28} color="#000" />
+          <Text style={styles.iconText}>Drivers</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.icon}>
-          <Icon name="car" size={32} color="#000" />
+        <TouchableOpacity style={styles.icon} onPress={handleTripsPress}>
+          <Icon name="car" size={28} color="#000" />
           <Text style={styles.iconText}>Trips</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.icon}>
-          <Icon name="bus" size={32} color="#000" />
+       </TouchableOpacity>
+          <TouchableOpacity style={styles.icon} onPress={handleCarsPress}>
+          <Icon name="bus" size={28} color="#000" />
           <Text style={styles.iconText}>Cars</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
       </View>
-
-      <FlatList
-        data={trips}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        horizontal={true}
-        contentContainerStyle={styles.flatList}
-      />
+      <View style={styles.tripsContainer}>
+        <FlatList data={trips} renderItem={renderItem} keyExtractor={(item) => item.id} />
+      </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
+  tripCard: {
+    width: '90%',
+    height: 200,
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginVertical: 10,
+    alignSelf: 'center',
+  },
+  cardBackground: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    zIndex: 0,
+  },
+  destinationText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  cardContent: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    height: '100%',
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: 'rgba(128, 128, 128, 0.4)',
+    
   },
   coverPhotoContainer: {
     alignItems: 'center',
@@ -70,7 +105,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     backgroundColor: '#FFF',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   coverPhoto: {
     width: '100%',
@@ -88,49 +123,44 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     marginTop: -20,
     alignSelf: 'center',
-    zIndex: 1
+    zIndex: 1,
+    elevation: 2,
   },
   searchBar: {
     flex: 1,
+    height: '100%',
     fontSize: 16,
+    color: '#000',
+    paddingHorizontal: 10,
   },
   searchButton: {
-    backgroundColor: '#000',
-    borderRadius: 20,
+    backgroundColor: '#007AFF',
+    height: '100%',
     width: 40,
-    height: 40,
-    alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 8,
+    alignItems: 'center',
+    borderRadius: 20,
   },
   iconContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingHorizontal: 40,
-    marginTop: 20,
-  },
- 
-  iconWrapper: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    borderWidth: 3,
-    borderColor: '#F7D154',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginVertical: 12,
   },
   icon: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
     alignItems: 'center',
   },
   iconText: {
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: 'bold',
     marginTop: 5,
   },
+  tripsContainer: {
+    flex: 1,
+    padding: 20,
+  },
+  cardText: {
+    color: 'white',
+  },
 });
-
-export default AdminScreen;
+  
+  export default AdminScreen;

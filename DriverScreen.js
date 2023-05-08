@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const DriverScreen = () => {
+const DriverScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
