@@ -30,8 +30,7 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.icon} onPress={() => setRole('admin')}>
             <MaterialIcons name="person" size={25} color="#808080" />
             <Text style={styles.iconText}>Admin</Text>
-          </TouchableOpacity>
-        </View>
+          </TouchableOpacity>        </View>
         {  (
           <>
             <TextInput

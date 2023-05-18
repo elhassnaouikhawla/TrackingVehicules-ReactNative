@@ -2,27 +2,23 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, ImageBackground, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
 
-const AddDriverScreen = ({ navigation }) => {
+const AddAdminScreen = ({ navigation }) => {
   const [name, setName] = useState('');
-  const [licenseNumber, setLicenseNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleAddDriver = () => {
-    const newDriver = {
+  const handleAddAdmin = () => {
+    const newAdmin = {
       name,
-      licenseNumber,
       email,
-      phoneNumber,
-      birthdate
+      password
     };
-    navigation.navigate('DriverAdmin', { newDriver });
+    navigation.navigate('AdminAdmin', { newAdmin });
   };
 
   return (
     <ImageBackground
-      source={require('./images/driverpic1.jpg')}
+      source={require('./images/AdminScreenn.png')}
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
@@ -36,12 +32,6 @@ const AddDriverScreen = ({ navigation }) => {
             />
             <TextInput
               style={styles.input}
-              value={licenseNumber}
-              onChangeText={setLicenseNumber}
-              placeholder="Driver's license number"
-            />
-            <TextInput
-              style={styles.input}
               value={email}
               onChangeText={setEmail}
               placeholder="Email"
@@ -49,28 +39,14 @@ const AddDriverScreen = ({ navigation }) => {
             />
             <TextInput
               style={styles.input}
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              placeholder="Phone number"
-              keyboardType="phone-pad"
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Password"
+              secureTextEntry
             />
-            <TextInput
-              style={styles.input}
-              value={licenseNumber}
-              onChangeText={setLicenseNumber}
-              placeholder="License num"
-              keyboardType="phone-pad"
-            />
-              <TextInput
-                style={styles.input}
-                value={birthdate}
-                onChangeText={setBirthdate}
-                placeholder="Birthdate"
-                keyboardType="numeric"
-              />
             <Button
               title="Add"
-              onPress={handleAddDriver}
+              onPress={handleAddAdmin}
               color="#FFA500"
             />
           </Card>
@@ -106,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddDriverScreen;
+export default AddAdminScreen;

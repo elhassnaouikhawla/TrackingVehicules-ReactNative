@@ -10,18 +10,19 @@ const [description, setDescription] = useState('');
 const [departureDate, setDepartureDate] = useState('');
 const [arrivalDate, setArrivalDate] = useState('');
 const [driverName, setDriverName] = useState('');
-
+const [CarId, setCarId] = useState('');
 const handleAddTrip = () => {
-if (title.trim() === '' || description.trim() === '' || departureDate.trim() === '' || arrivalDate.trim() === '' || driverName.trim() === '') {
+if (title.trim() === '' || description.trim() === '' || departureDate.trim() === '' || arrivalDate.trim() === '' || driverName.trim() === ''|| CarId.trim() === '') {
 alert('Please fill all fields');
 return;
 }
-addTrip(title, description, departureDate, arrivalDate, driverName);
+addTrip(title, description, departureDate, arrivalDate, driverName, CarId);
 setTitle('');
 setDescription('');
 setDepartureDate('');
 setArrivalDate('');
 setDriverName('');
+setCarId('');
 navigation.goBack();  // navigate back to 
 };
 
@@ -59,6 +60,12 @@ style={styles.input}
 placeholder="Driver name"
 value={driverName}
 onChangeText={text => setDriverName(text)}
+/>
+<TextInput
+style={styles.input}
+placeholder="Car ID"
+value={CarId}
+onChangeText={text => setCarId(text)}
 />
 <TouchableOpacity style={styles.button} onPress={handleAddTrip}>
 <Text style={styles.buttonText}>Add </Text>

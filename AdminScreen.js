@@ -4,6 +4,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack';
 import DriverAdmin from './DriverAdmin';
 
+import TripsAdmin from './TripsAdmin';
+import CarsAdmin from './CarsAdmin';
+
+
 const Stack = createStackNavigator();
 
 const AdminScreen = ({ navigation }) => {
@@ -35,6 +39,9 @@ const AdminScreen = ({ navigation }) => {
   const handleCarsPress = () => {
     navigation.navigate('CarsAdmin');
   }; 
+  const handleAdminIconPress = () => {
+    navigation.navigate('AdminAdmin');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.coverPhotoContainer}>
@@ -61,8 +68,15 @@ const AdminScreen = ({ navigation }) => {
           </TouchableOpacity>
       </View>
       <View style={styles.tripsContainer}>
-        <FlatList data={trips} renderItem={renderItem} keyExtractor={(item) => item.id} />
+      <View style={styles.listingHeader}>
+        <Text style={styles.listingTitle}>Lately Listing</Text>
+        <TouchableOpacity onPress={() => handleAdminIconPress()}>
+          <Icon name="person-circle" size={30} color="#000" />
+        </TouchableOpacity>
       </View>
+      <FlatList data={trips} renderItem={renderItem} keyExtractor={(item) => item.id} />
+    </View>
+     
     </View>
   );
 };
@@ -74,6 +88,20 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginVertical: 10,
     alignSelf: 'center',
+  },
+  listingHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  adminIcon: {
+    marginLeft: 10,
+  },
+  listingTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
   },
   cardBackground: {
     width: '100%',
@@ -162,5 +190,5 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-  
+ 
   export default AdminScreen;

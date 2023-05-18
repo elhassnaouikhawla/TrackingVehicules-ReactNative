@@ -1,28 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const AddCarsScreen = ({ addCar }) => {
+const UpdateCarsScreen = ({ updateCar }) => {
   const navigation = useNavigation();
-  
+  const route = useRoute();
+
+  const [carId, setCarId] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [year, setYear] = useState('');
   const [color, setColor] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
 
-  const handleAddCar = () => {
+  useEffect(() => {
+    const { car } = route.params;
+    setCarId(car.id);
+    setBrand(car.brand);
+    setModel(car.model);
+    setYear(car.year);
+    setColor(car.color);
+    setLicensePlate(car.licensePlate);
+  }, []);
+
+  const handleUpdateCar = () => {
     if (brand.trim() === '' || model.trim() === '' || year.trim() === '' || color.trim() === '' || licensePlate.trim() === '') {
       alert('Please fill all fields');
       return;
     }
-    const car = { brand, model, year, color, licensePlate };
-    addCar(car);
-    setBrand('');
-    setModel('');
-    setYear('');
-    setColor('');
-    setLicensePlate('');
+    const updatedCar = { id: carId, brand, model, year, color, licensePlate };
+    updateCar(updatedCar);
     navigation.goBack();
   };
 
@@ -61,8 +68,8 @@ const AddCarsScreen = ({ addCar }) => {
             value={licensePlate}
             onChangeText={setLicensePlate}
           />
-          <TouchableOpacity style={styles.button} onPress={handleAddCar}>
-            <Text style={styles.buttonText}>Add</Text>
+          <TouchableOpacity style={styles.button} onPress={handleUpdateCar}>
+            <Text style={styles.buttonText}>Update</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -111,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddCarsScreen;
+export default UpdateCarsScreen;

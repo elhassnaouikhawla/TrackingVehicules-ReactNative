@@ -1,64 +1,54 @@
 import React, { useState } from 'react';
-import { ImageBackground } from 'react-native';
-import {
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { ImageBackground, StyleSheet, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import AddCarsScreen from './AddCarsScreen';
+import CarDetail from './CarDetail';
 const CarsAdmin = () => {
   const navigation = useNavigation();
+  const [cars, setCars] = useState([
+    { id: 1, brand: 'KN', model: 'Model 1', year: 2021, color: 'Red', licensePlate: 'ABC123' },
+    { id: 2, brand: 'FIAT', model: 'Model 2', year: 2022, color: 'Blue', licensePlate: 'DEF456' },
+    { id: 3, brand: 'Ford', model: 'Model 3', year: 2023, color: 'Green', licensePlate: 'GHI789' },
+  ]);
 
+  const handleDeleteCar = (id) => {
+    setCars(cars.filter((car) => car.id !== id));
+  };
+
+  const onUpdateCars = (car) => {
+    navigation.navigate('UpdateCarsScreen', { car });
+  };
+  const [showAddCars, setShowAddCars] = useState(false);
+
+  const handleShowAddCars = () => {
+    setShowAddCars(true);
+  };
+  const handleAddCars = (newCar) => {
+    setCars([...Cars, newCar]);
+  };
+  const onShowCarDetail = (car) => {
+    navigation.navigate('CarDetail', { car });
+  };
   const CarList = () => {
-    const [cars, setCars] = useState([
-      { id: 1, brand: 'Toyota', model: 'Corolla', year: '2022', price: 200 },
-      { id: 2, brand: 'Honda', model: 'Civic', year: '2022', price: 180 },
-      { id: 3, brand: 'Ford', model: 'Mustang', year: '2023', price: 250 },
-    ]);
-
-    const handleDeleteCar = (id) => {
-      setCars(cars.filter((car) => car.id !== id));
-    };
-
-    const onUpdateCars = (car) => {
-      navigation.navigate('UpdateCarsScreen', { Car: car });
-    };
-
-    const onAddCars = () => {
-      navigation.navigate('AddCarsScreen', { addCar: handleAddCar });
-    };
-
-    const handleAddCar = (brand, model, year, price) => {
-      setCars((prevCars) => [
-        ...prevCars,
-        { id: prevCars.length + 1, brand: brand, model: model, year: year, price: price },
-      ]);
-    };
-
     return (
       <View style={styles.carCard}>
-        <View style={styles.cardHeader}>
-          <TouchableOpacity style={styles.addButton} onPress={onAddCars}>
-            <Text style={styles.addButtonLabel}>Add a car</Text>
-          </TouchableOpacity>
-        </View>
         <ScrollView style={styles.scrollView}>
-          {cars.map((car) => (
-            <View key={car.id} style={styles.car}>
-              <Text style={styles.carName}>{car.brand} {car.model}</Text>
-              <Text style={styles.carYear}>{car.year}</Text>
-              <Text style={styles.carPrice}>${car.price} / day</Text>
-              <View style={styles.carButtons}>
-                <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateCars(car)}>
-                  <MaterialIcons name="edit" size={24} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteCar(car.id)}>
-                  <MaterialIcons name="delete" size={24} color="black" />
-                </TouchableOpacity>
+          {cars.map((car, index) => (
+            <View key={car.id} style={[styles.car, index === 0 ? { marginTop: 10 } : null]}>
+              <View style={styles.carNameContainer}>
+                <Text style={styles.carName}>{car.brand}</Text>
+                <View style={[styles.carButtons, { marginTop: 15 }]}>
+                  <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateCars(car)}>
+                    <MaterialIcons name="edit" size={19} color="black" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteCar(car.id)}>
+                    <MaterialIcons name="delete" size={19} color="black" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.detailButton} onPress={() => onShowCarDetail(car)}>
+  <MaterialIcons name="details" size={19} color="black" />
+</TouchableOpacity>
+                </View>
               </View>
             </View>
           ))}
@@ -67,104 +57,106 @@ const CarsAdmin = () => {
     );
   };
 
+
+
   return (
     <ImageBackground source={require('./images/CarsAdmin.jpg')} style={styles.backgroundImage}>
-      <View style={styles.overlay}>
-        
-        <CarList />
+      <View style={styles.container}>
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddCarsScreen', { handleAddCars })}>
+          <Text style={[styles.addButtonText, { fontWeight: 'bold' }]}>Add a Car</Text>
+        </TouchableOpacity>
+            <CarList />
       </View>
     </ImageBackground>
   );
 };
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'transparent',
+  container: {
+    flex: 1,
+  },
+  addButton: {
+    backgroundColor: '#0080FF',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  addButtonLabel: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  scrollView: {
+    padding: 20,
+  },
+  carCard: {
+    marginBottom: 70,
+    marginTop: 0,
+    width: '100%',
+    marginTop: 70,
+  },
+  car: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 5,
+    shadowColor: 'black',
+    marginTop:20,
+    shadowOffset: {
+      width: 0,
+      height: 3,
     },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      padding: 20,
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-    },
-    addButton: {
-      backgroundColor: '#0080FF',
-      paddingVertical: 10,
-      paddingHorizontal: 15,
-      borderRadius: 5,
-    },
-    addButtonLabel: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    scrollView: {
-      padding: 20,
-    },
-    carCard: {
-      backgroundColor: 'rgba(0,0,0,0.8)',
-      marginBottom: 20,
-      padding: 10,
-      borderRadius: 5,
-      shadowColor: 'black',
-      shadowOffset: {
-        width: 0,
-        height: 3,
-      },
-      shadowOpacity: 0.20,
-      shadowRadius: 2.60,
+    shadowOpacity: 0.2,
+    shadowRadius: 2.6,
+    elevation: 4,
+    width: '100%',
+    marginLeft: 10,
     
-      elevation: 4,
-    },
-    carName: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginBottom: 5,
-      color: 'white',
-    },
-    carImage: {
-      width: '100%',
-      height: 200,
-      marginBottom: 10,
-      resizeMode: 'cover',
-    },
-    
-        carDescription: {
-            fontSize: 16,
-            color: 'white',
-            marginBottom: 10,
-          },
-    
-    carButtons: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    },
-    updateButton: {
-      backgroundColor: '#0080FF',
-      padding: 10,
-      borderRadius: 5,
-      marginRight: 10,
-    },
-    deleteButton: {
-      backgroundColor: '#FF0000',
-      padding: 10,
-      borderRadius: 5,
-    },
-    buttonLabel: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    backgroundImage: {
-      flex: 1,
-      resizeMode: 'cover',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-  });
-  export default CarsAdmin;
+  },
+  carNameContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  carName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: 'white',
+  },
+  carButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  updateButton: {
+    backgroundColor: '#0080FF',
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 5,
+  },
+  deleteButton: {
+    backgroundColor: '#FF0000',
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 5,
+  },
+  detailButton: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 5,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+export default CarsAdmin;

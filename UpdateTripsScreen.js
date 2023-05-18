@@ -1,120 +1,116 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 
 const UpdateTripsScreen = ({ route, navigation }) => {
-  const { trip } = route.params;
-  const [startLocation, setStartLocation] = useState(trip.startLocation);
-  const [endLocation, setEndLocation] = useState(trip.endLocation);
-  const [startDate, setStartDate] = useState(trip.startDate);
-  const [endDate, setEndDate] = useState(trip.endDate);
-  const [distance, setDistance] = useState(trip.distance);
-  const [price, setPrice] = useState(trip.price);
+const { trip, onUpdateTrips } = route.params;
+const [title, setTitle] = useState(trip.title);
+const [description, setDescription] = useState(trip.description);
+const [dateOfDeparture, setDateOfDeparture] = useState(trip.dateOfDeparture);
+const [dateOfArrival, setDateOfArrival] = useState(trip.dateOfArrival);
+const [driverName, setDriverName] = useState(trip.driverName);
+const [carId, setCarId] = useState(trip.carId);
 
-  const handleUpdateTrip = () => {
-    // Update trip information in the database here
-    // ...
+const handleUpdateTrips = () => {
+const updatedTrip = {
+id: trip.id,
+title,
+description,
+dateOfDeparture,
+dateOfArrival,
+driverName,
+carId,
+};
+onUpdateTrips(updatedTrip);
+navigation.goBack();
+};
 
-    navigation.goBack();
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Update Trip Information</Text>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Start Location"
-          value={startLocation}
-          onChangeText={setStartLocation}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="End Location"
-          value={endLocation}
-          onChangeText={setEndLocation}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Start Date"
-          value={startDate}
-          onChangeText={setStartDate}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="End Date"
-          value={endDate}
-          onChangeText={setEndDate}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Distance"
-          value={distance}
-          onChangeText={setDistance}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Price"
-          value={price}
-          onChangeText={setPrice}
-        />
-      </View>
-
-      <TouchableOpacity style={styles.updateButton} onPress={handleUpdateTrip}>
-        <Text style={styles.buttonLabel}>Update Trip</Text>
+return (
+<ImageBackground source={require('./images/TripsScreenn.jpg')} style={styles.backgroundImage}>
+<View style={styles.container}>
+<View style={styles.card}>
+<TextInput
+         style={styles.input}
+         placeholder="Title"
+         value={title}
+         onChangeText={setTitle}
+       />
+<TextInput
+         style={styles.input}
+         placeholder="Description"
+         value={description}
+         onChangeText={setDescription}
+       />
+<TextInput
+         style={styles.input}
+         placeholder="Date of Departure"
+         value={dateOfDeparture}
+         onChangeText={setDateOfDeparture}
+       />
+<TextInput
+         style={styles.input}
+         placeholder="Date of Arrival"
+         value={dateOfArrival}
+         onChangeText={setDateOfArrival}
+       />
+<TextInput
+         style={styles.input}
+         placeholder="Driver Name"
+         value={driverName}
+         onChangeText={setDriverName}
+       />
+<TextInput
+         style={styles.input}
+         placeholder="Car ID"
+         value={carId}
+         onChangeText={setCarId}
+       />
+  <TouchableOpacity style={styles.updateButton} onPress={handleUpdateTrips}>
+        <Text style={styles.buttonLabel}>Update </Text>
       </TouchableOpacity>
     </View>
-  );
+  </View>
+</ImageBackground>
+);
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 18,
-  },
-  updateButton: {
-    backgroundColor: '#0080FF',
-    padding: 15,
-    borderRadius: 5,
-    marginTop: 20,
-  },
-  buttonLabel: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+container: {
+flex: 1,
+alignItems: 'center',
+justifyContent: 'center',
+padding: 20,
+},
+card: {
+backgroundColor: '#EDEDED',
+borderRadius: 10,
+padding: 20,
+},
+input: {
+width: '100%',
+marginBottom: 10,
+padding: 10,
+backgroundColor: '#fff',
+borderWidth: 1,
+borderColor: '#ccc',
+borderRadius: 4,
+},
+updateButton: {
+backgroundColor: '#0080FF',
+padding: 15,
+borderRadius: 5,
+marginTop: 20,
+},
+buttonLabel: {
+color: '#fff',
+fontSize: 18,
+fontWeight: 'bold',
+textAlign: 'center',
+},
+backgroundImage: {
+flex: 1,
+resizeMode: 'cover',
+justifyContent: 'center',
+},
 });
 
 export default UpdateTripsScreen;
